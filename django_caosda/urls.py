@@ -16,10 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-import CAOSDA.views
-from CAOSDA.views import Saludos
+from videojocs.views import home
+from videojocs.views import videogames
+from users.views import login
+from users.views import register
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', Saludos.as_view())
+    path('admin/', admin.site.urls, name="admin"),
+    path('login/', login.as_view(), name="login"),
+    path('register/', register.as_view(), name="register"),
+    path('', home.as_view(), name="home"),
+    path('videogames/', videogames.as_view(), name="videogames"),
 ]

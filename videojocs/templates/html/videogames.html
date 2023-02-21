@@ -16,7 +16,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="border-bottom">
+                    <tr>
+
                         <td>Minecraft</td>
                         <td>20€</td>
                         <td>No</td>
@@ -28,17 +29,73 @@
                 </table>
                 <p class="text-center text-secondary">No more data</p>
             </div>
-            <button type="submit" title="Add new videogame" class="bg-dark text-white border-0 rounded w-100 mt-2 p-2" data-toggle="modal" data-target="#addCompany"><i class="fa-solid fa-plus"></i> Add new videogame</button>
+            <button type="submit" title="Add new videogame" class="bg-dark text-white border-0 rounded w-100 mt-2 p-2" data-toggle="modal" data-target="#addVideogame"><i class="fa-solid fa-plus"></i> Add new videogame</button>
             </div>
         </div>
     </div>
 </div>
 
+<!--Edit-->
 <div class="modal fade" id="editVideogame" tabindex="-1" role="dialog" aria-labelledby="editVideogame" aria-hidden="true">
-        <form method="POST" action="" class="modal-dialog modal-dialog-centered" role="form" id="editForm">
+        <form method="POST" action="" class="modal-dialog modal-dialog-centered" role="form" id="editFormVideogame">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editTitle">Edit videogame</h5>
+                    <button type="button" class="btn shadow-0" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
+                    </button>
+                </div>
+                <div id="idVideogame" name="idVideogame" class="d-none"></div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
+                        <div class="col-md-6">
+                            <input id="name" type="text" class="form-control border-0 shadow" name="name">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="price" class="col-md-4 col-form-label text-md-end">Subscription price</label>
+                        <div class="col-md-6">
+                            <input id="price" type="number" class="form-control border-0 shadow" name="price">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 d-flex align-items-center">
+                        <label for="isnew" class="form-check-label col-md-4 col-form-label text-md-end">Is new</label>
+                        <div class="form-check form-switch mx-3 col-md-6">
+                            <input class="form-check-input" type="checkbox" id="isnew" name="isnew">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="platform" class="col-md-4 col-form-label text-md-end">Platform</label>
+                        <div class="col-md-6">
+                            <select id="platform" name="platform" class="form-select form-control border-0 shadow" aria-label="Platform selector">
+                                <option selected disabled>Platform selector</option>
+                                <option value="1">Steam</option>
+                                <option value="2">Mojang</option>
+                                <option value="3">Epic Games</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="submit" class="btn btn-dark">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--Add-->
+<div class="modal fade" id="addVideogame" tabindex="-1" role="dialog" aria-labelledby="addVideogame" aria-hidden="true">
+        <form method="POST" action="addPlataforma" class="modal-dialog modal-dialog-centered" role="form" id="addFormVideogame">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTitle">Add videogame</h5>
                     <button type="button" class="btn shadow-0" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
                     </button>

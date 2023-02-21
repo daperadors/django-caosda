@@ -18,6 +18,7 @@ from django.urls import path
 
 from videojocs.views import home
 from videojocs.views import videogames
+from videojocs.views import platforms
 from users.views import login
 from users.views import register
 
@@ -27,4 +28,6 @@ urlpatterns = [
     path('register/', register.as_view(), name="register"),
     path('', home.as_view(), name="home"),
     path('videogames/', videogames.as_view(), name="videogames"),
+    path('platforms/', platforms.as_view(), name="platforms"),
+    path('add/platform', platforms.as_view(), name="add_platform"),
 ]

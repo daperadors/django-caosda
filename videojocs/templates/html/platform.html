@@ -1,0 +1,128 @@
+{% include 'html/header.html' %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">Videogames - CaOsDa</div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Date add</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="border-bottom">
+                        <td>Steam</td>
+                        <td>21/2/2023</td>
+                        <td title="Edit platform" data-toggle="modal" data-target="#editPlatform" class="updatePlatform"><i class="fa-solid fa-pen-to-square"></i></td>
+                        <td title="Delete platform"><i class="fa-solid fa-trash"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="text-center text-secondary">No more data</p>
+            </div>
+            <button type="submit" title="Add new plaftorm" class="bg-dark text-white border-0 rounded w-100 mt-2 p-2" data-toggle="modal" data-target="#addPlatform"><i class="fa-solid fa-plus"></i> Add new platform</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit-->
+<div class="modal fade" id="editPlatform" tabindex="-1" role="dialog" aria-labelledby="editPlatform" aria-hidden="true">
+        <form method="POST" action="" class="modal-dialog modal-dialog-centered" role="form" id="editFormPlatform">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTitle">Edit platform</h5>
+                    <button type="button" class="btn shadow-0" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
+                    </button>
+                </div>
+                <div id="idPlatform" name="idPlatform" class="d-none"></div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
+                        <div class="col-md-6">
+                            <input id="name" type="text" class="form-control border-0 shadow" name="name">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="date" class="col-md-4 col-form-label text-md-end">Date</label>
+                        <div class="col-md-6">
+                            <input id="date" type="datetime-local" class="form-control border-0 shadow" name="date">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="user" class="col-md-4 col-form-label text-md-end">User</label>
+                        <div class="col-md-6">
+                            <select id="user" name="user" class="form-select form-control border-0 shadow" aria-label="User selector">
+                                <option selected disabled>User selector</option>
+                                <option value="1">Carlos</option>
+                                <option value="2">David</option>
+                                <option value="3">Oscar</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="submit" class="btn btn-dark">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--Add-->
+<div class="modal fade" id="addPlatform" tabindex="-1" role="dialog" aria-labelledby="addPlatform" aria-hidden="true">
+        <form method="POST" action="add/platform" class="modal-dialog modal-dialog-centered" role="form" id="addFormPlatform">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTitle">Add platform</h5>
+                    <button type="button" class="btn shadow-0" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
+                    </button>
+                </div>
+                <div id="idPlatform" name="idPlatform" class="d-none"></div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
+                        <div class="col-md-6">
+                            <input id="name" type="text" class="form-control border-0 shadow" name="name">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="date" class="col-md-4 col-form-label text-md-end">Date</label>
+                        <div class="col-md-6">
+                            <input id="date" type="datetime-local" class="form-control border-0 shadow" name="date">
+                        </div>
+                    </div>
+
+                        <div class="row mb-3">
+                            <label for="users" class="col-md-4 col-form-label text-md-end">Users</label>
+                            <div class="col-md-6 d-flex">
+                                <select id="users" name="users" class="form-select" aria-label="User selector" required multiple>
+                                    <option selected disabled>User selector</option>
+                                    <option value="1">David</option>
+                                    <option value="2">Carlos</option>
+                                    <option value="3">Oscar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="submit" class="btn btn-dark">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

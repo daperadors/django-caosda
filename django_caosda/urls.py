@@ -28,6 +28,7 @@ urlpatterns = [
     path('register/', register.as_view(), name="register"),
     path('', home.as_view(), name="home"),
     path('videogames/', videogames.as_view(), name="videogames"),
+    path('/add/{id}', videogames.as_view(), name="videogames"),
     path('platforms/', platforms.as_view(), name="platforms"),
-    path('add/platform', platforms.as_view(), name="add_platform"),
+    path('platforms/add/', platforms.as_view(), name="add_platform"),
 ]

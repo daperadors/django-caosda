@@ -10,14 +10,23 @@ class home(View):
 class videogames(View):
     def get(self, data):
         videogames = Videogame.objects.all()
-        return render(data, 'html/videogames.html', context = {videogames})
-    #def add_videojoc(self, data, platform_id):
+        context = {
+            'videogames': videogames
+        }
+        return render(data, 'html/videogames.html', context=context)
+    #def post(self, data, platform_id):
+
 
 class platforms(View):
     def get(self, data):
         return render(data, 'html/platform.html')
 
-    def add_platform(self, request):
-        Platform.objects.create(request, name = request.POST.get("name"), date = request.POST.get("date"), users = request.POST.get("users"))
+    def post(self, request):
+        name = request.POST['name']
+        date = request.POST['date']
+        users_id = request.POST.getlist['users']
+        users = User.objects.filter(id__in=users_id)
+        platform = Platform(name = name, date = date)
+        platform.save()
 
 

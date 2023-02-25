@@ -1,32 +1,57 @@
 {% include 'html/header.html' %}
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-4">
+        <div class="col">
             <div class="card">
-                <div class="card-header">Platforms - CaOsDa</div>
+                <div class="card-header">
+                    <nav class="navbar shadow-none">
+                    <div class="nav-item">Platforms - CaOsDa</div>
+                    <div class="navbar-nav">
+                      <div class="nav-item">
+                        <div title="Search platform" data-toggle="modal" data-target="#searchPlatform" class="searchPlatform">
+                          <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                      </div>
+                    </div>
+                </nav>
+                </div>
                 <table class="table">
                     <thead>
                     <tr>
                         <th scope="col">Name</th>
-                        <th scope="col">Date add</th>
+                        <th scope="col">Date added</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
+                    {% for platform in platforms %}
                     <tr class="border-bottom">
-                        <td>Steam</td>
-                        <td>21/2/2023</td>
-                        <td title="Add videogame" data-toggle="modal" data-target="#addVideogame" class="addPlatform"><i class="fa-solid fa-gamepad"></i></td>
-                        <td title="Edit platform" data-toggle="modal" data-target="#editPlatform" class="updatePlatform"><i class="fa-solid fa-pen-to-square"></i></td>
-                        <td title="Delete platform"><i class="fa-solid fa-trash"></i></td>
+                        <td>{{ platform.name }}</td>
+                        <td>{{ platform.date }}</td>
+                        <td title="Search platform" data-toggle="modal" data-target="#searchPlatform" class="searchPlatform"><i class="fa-solid fa-magnifying-glass"></i></td>
+                        <td title="Add videogame" data-platform-id="{{ platform.id }}" data-platform-name="{{ platform.name }}" data-toggle="modal" data-target="#addVideogame" class="addVideogame"><i class="fa-solid fa-gamepad"></i></td>
+                        <td title="Add gamer" data-id="{{ platform.id }}" data-toggle="modal" data-target="#addUser" class="addUserToGame"><i class="fa-solid fa-user-plus"></i></td>
+                        <td title="Edit platform" data-id="{{ platform.id }}" data-name="{{ platform.name }}" data-date="{{ platform.date }}" data-toggle="modal" data-target="#editPlatform" class="updatePlatform"><i class="fa-solid fa-pen-to-square"></i></td>
+
+                        <form method="POST" action="delete/{{ platform.id }}" class="modal-dialog modal-dialog-centered" role="form" id="removeFormPlatform">
+                            {% csrf_token %}
+                            <td title="Delete platform" class="deletePlatform">
+                                <button type="submit" style="background-color: rgba(255,255,255,0); border: none">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </form>
                     </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
                 <p class="text-center text-secondary">No more data</p>
             </div>
-            <button type="submit" title="Add new plaftorm" class="bg-dark text-white border-0 rounded w-100 mt-2 p-2" data-toggle="modal" data-target="#addPlatform"><i class="fa-solid fa-plus"></i> Add new platform</button>
+            <button type="submit" title="Add new plaftorm" class="bg-dark text-white border-0 w-100 mt-2 p-2 fixed-bottom" data-toggle="modal" data-target="#addPlatform"><i class="fa-solid fa-plus"></i> Add new platform</button>
             </div>
         </div>
     </div>
@@ -34,7 +59,8 @@
 
 <!--Edit-->
 <div class="modal fade" id="editPlatform" tabindex="-1" role="dialog" aria-labelledby="editPlatform" aria-hidden="true">
-        <form method="POST" action="" class="modal-dialog modal-dialog-centered" role="form" id="editFormPlatform">
+        <form method="POST" action="edit/" class="modal-dialog modal-dialog-centered" role="form" id="editFormPlatform">
+        {% csrf_token %}
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editTitle">Edit platform</h5>
@@ -58,17 +84,6 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <label for="user" class="col-md-4 col-form-label text-md-end">User</label>
-                        <div class="col-md-6">
-                            <select id="user" name="user" class="form-select form-control border-0 shadow" aria-label="User selector">
-                                <option selected disabled>User selector</option>
-                                <option value="1">Carlos</option>
-                                <option value="2">David</option>
-                                <option value="3">Oscar</option>
-                            </select>
-                        </div>
-                    </div>
 
                 </div>
                 <div class="modal-footer">
@@ -107,18 +122,6 @@
                         </div>
                     </div>
 
-                        <div class="row mb-3">
-                            <label for="users" class="col-md-4 col-form-label text-md-end">Users</label>
-                            <div class="col-md-6 d-flex">
-                                <select id="users" name="users" class="form-select" aria-label="User selector" required multiple>
-                                    <option selected disabled>User selector</option>
-                                    <option value="1">David</option>
-                                    <option value="2">Carlos</option>
-                                    <option value="3">Oscar</option>
-                                </select>
-                            </div>
-                        </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -130,7 +133,8 @@
 </div>
 <!--Add Videogame-->
 <div class="modal fade" id="addVideogame" tabindex="-1" role="dialog" aria-labelledby="addVideogame" aria-hidden="true">
-        <form method="POST" action="addPlataforma" class="modal-dialog modal-dialog-centered" role="form" id="addFormVideogame">
+        <form method="POST" action="addVideogames/{id}" class="modal-dialog modal-dialog-centered" role="form" id="addFormVideogame">
+        {% csrf_token %}
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addTitle">Add videogame</h5>
@@ -138,7 +142,6 @@
                         <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
                     </button>
                 </div>
-                <div id="idVideogame" name="idVideogame" class="d-none"></div>
                 <div class="modal-body">
                     <div class="row mb-3">
                         <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
@@ -164,15 +167,102 @@
                     <div class="row mb-3">
                         <label for="platform" class="col-md-4 col-form-label text-md-end">Platform</label>
                         <div class="col-md-6">
-                            <select id="platform" name="platform" class="form-select form-control border-0 shadow" aria-label="Platform selector">
-                                <option selected disabled>Platform selector</option>
-                                <option value="1">Steam</option>
-                                <option value="2">Mojang</option>
-                                <option value="3">Epic Games</option>
-                            </select>
+                            <input id="platformOption" type="text" class="form-control border-0 shadow" name="platform"  disabled>
                         </div>
                     </div>
 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="submit" class="btn btn-dark">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="addUser" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="form" id="addFormUser">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTitle">Add user into platform</h5>
+                <button type="button" class="btn shadow-0" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <label for="platform" class="col-md-4 col-form-label text-md-end">Platform</label>
+                    <div class="col-md-6">
+                        <select id="userSelected" name="userSelected" class="form-select form-control border-0 shadow" aria-label="User selector">
+                            <option selected disabled>User selector</option>
+                            {% for user in users %}
+                            <option value="{{ user.id }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" name="submit" class="btn btn-dark" data-dismiss="modal" data-toggle="modal" data-target="#addUserFinal" id="user-to-platform">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addUserFinal" tabindex="-1" role="dialog" aria-labelledby="addUserFinal" aria-hidden="true">
+        <form method="POST" action="{id}/{id}" class="modal-dialog modal-dialog-centered" role="form" id="addUserToPlatform">
+        {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTitle">Do you want to associate this user to this platform?</h5>
+                    <button type="button" class="btn shadow-0" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <button type="submit" name="submit3" class="btn btn-danger w-100 mb-1">Yes</button>
+                    <button type="button" class="btn btn-secondary w-100" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="searchPlatform" tabindex="-1" role="dialog" aria-labelledby="searchPlatform" aria-hidden="true">
+        <form method="POST" class="modal-dialog modal-dialog-centered" role="form" id="searchFormPlatform">
+        {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTitle">Search user platform</h5>
+                    <button type="button" class="btn shadow-0" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
+                    </button>
+                </div>
+                <div id="idPlatform" name="idPlatform" class="d-none"></div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="input-group mb-3">
+                          <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" id="search_user">
+                          <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2"><i class="fa-solid fa-magnifying-glass"></i></span>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <table class="table d-none" id="search_table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Date added</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody-searchuser">
+                            </tbody>
+                        </table>
+                        <p class="d-flex justify-content-center" id="user_not_found">User not found</p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

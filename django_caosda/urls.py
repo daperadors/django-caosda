@@ -16,9 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from videojocs.views import home
-from videojocs.views import videogames
-from videojocs.views import platforms
+from videojocs.views import home, videogames, platforms, platformRandom, platformEdit, platformDelete, platformRandomNewGames, usersPlatform, remove_videojoc, add_videojoc
 from users.views import login
 from users.views import register
 
@@ -28,7 +26,15 @@ urlpatterns = [
     path('register/', register.as_view(), name="register"),
     path('', home.as_view(), name="home"),
     path('videogames/', videogames.as_view(), name="videogames"),
-    path('/add/{id}', videogames.as_view(), name="videogames"),
+    path('platforms/addVideogames/<int:id>', videogames.as_view()),
     path('platforms/', platforms.as_view(), name="platforms"),
+    path('platforms/edit/<int:id>', platformEdit.as_view(), name="edit_platform"),
     path('platforms/add/', platforms.as_view(), name="add_platform"),
+    path('randomPlatform/', platformRandom.as_view(), name="random_platform"),
+    path('randomPlatformNewGames/', platformRandomNewGames.as_view(), name="random_platform_newgames"),
+    path('platforms/delete/<int:id>', platformDelete.as_view(), name="delete_platform"),
+    path('platforms/add/<int:id1>/<int:id2>', usersPlatform.as_view(), name="associate_user_to_platform"),
+    path('plataformesde/<str:name>', usersPlatform.as_view(), name="user_platform_search"),
+    path('removeVideojoc/<int:videogame_id>/<int:user_id>', remove_videojoc.as_view()),
+    path('videojoc/<int:videogame_id>/<int:user_id>', add_videojoc.as_view())
 ]

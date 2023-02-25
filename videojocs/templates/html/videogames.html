@@ -1,7 +1,7 @@
 {% include 'html/header.html' %}
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-7">
+        <div class="col">
             <div class="card">
                 <div class="card-header">Videogames - CaOsDa</div>
                 <table class="table">
@@ -11,8 +11,6 @@
                         <th scope="col">Subscription price</th>
                         <th scope="col">Is new</th>
                         <th scope="col">Platform</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -21,9 +19,7 @@
                         <td>{{videogame.name}}</td>
                         <td>{{videogame.subscription_price}}€</td>
                         <td>{{videogame.isNew}}</td>
-                        <td>{videogame.plataform_id}}</td>
-                        <td title="Edit videogame {{ videogame.name }}" data-table="{{videogame}}" data-toggle="modal" data-target="#editVideogame" class="updateVideogame"><i class="fa-solid fa-pen-to-square"></i></td>
-                        <td title="Delete videogame {{ videogame.name }}" data-id="{{videogame.id}}"><i class="fa-solid fa-trash"></i></td>
+                        <td>{{videogame.platform.name}}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -36,6 +32,7 @@
 <!--Edit-->
 <div class="modal fade" id="editVideogame" tabindex="-1" role="dialog" aria-labelledby="editVideogame" aria-hidden="true">
         <form method="POST" action="" class="modal-dialog modal-dialog-centered" role="form" id="editFormVideogame">
+        {% csrf_token %}
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editTitle">Edit videogame</h5>
@@ -43,7 +40,6 @@
                         <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
                     </button>
                 </div>
-                <div id="idVideogame" name="idVideogame" class="d-none"></div>
                 <div class="modal-body">
                     <div class="row mb-3">
                         <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
@@ -71,9 +67,9 @@
                         <div class="col-md-6">
                             <select id="platform" name="platform" class="form-select form-control border-0 shadow" aria-label="Platform selector">
                                 <option selected disabled>Platform selector</option>
-                                <option value="1">Steam</option>
-                                <option value="2">Mojang</option>
-                                <option value="3">Epic Games</option>
+                                {% for platform in platforms %}
+                                <option value="{{ platform.id }}">{{ platform.name }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>

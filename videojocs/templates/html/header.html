@@ -20,6 +20,7 @@
 
             <div class=" navbar-collapse">
                 <!-- Left Side Of Navbar -->
+            {% if request.user.is_authenticated %}
                 <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'videogames' %}">Videogames</a>
@@ -34,20 +35,28 @@
                             <a class="dropdown-item" href="{% url 'random_platform_newgames' %}">Random platform new game</a>
                           </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin" target="_blank">Admin</a>
-                        </li>
+                        {% if request.user.is_staff %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin" target="_blank">Admin</a>
+                            </li>
+                        {% endif %}
                 </ul>
-
+            {% endif %}
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
                     <!-- Authentication Links -->
+                    {% if request.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                            </li>
+                    {% else %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'login' %}">Login</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'register' %}">Register</a>
                             </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

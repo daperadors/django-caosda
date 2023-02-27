@@ -24,7 +24,6 @@
                         <th scope="col"></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
-                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,7 +31,6 @@
                     <tr class="border-bottom">
                         <td>{{ platform.name }}</td>
                         <td>{{ platform.date }}</td>
-                        <td title="Search platform" data-toggle="modal" data-target="#searchPlatform" class="searchPlatform"><i class="fa-solid fa-magnifying-glass"></i></td>
                         <td title="Add videogame" data-platform-id="{{ platform.id }}" data-platform-name="{{ platform.name }}" data-toggle="modal" data-target="#addVideogame" class="addVideogame"><i class="fa-solid fa-gamepad"></i></td>
                         <td title="Add gamer" data-id="{{ platform.id }}" data-toggle="modal" data-target="#addUser" class="addUserToGame"><i class="fa-solid fa-user-plus"></i></td>
                         <td title="Edit platform" data-id="{{ platform.id }}" data-name="{{ platform.name }}" data-date="{{ platform.date }}" data-toggle="modal" data-target="#editPlatform" class="updatePlatform"><i class="fa-solid fa-pen-to-square"></i></td>
@@ -231,7 +229,7 @@
 </div>
 
 <div class="modal fade" id="searchPlatform" tabindex="-1" role="dialog" aria-labelledby="searchPlatform" aria-hidden="true">
-        <form method="POST" class="modal-dialog modal-dialog-centered" role="form" id="searchFormPlatform">
+        <form class="modal-dialog modal-dialog-centered" role="form" id="searchFormPlatform">
         {% csrf_token %}
             <div class="modal-content">
                 <div class="modal-header">
@@ -266,7 +264,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="submit" class="btn btn-dark">Save changes</button>
                 </div>
             </div>
         </form>

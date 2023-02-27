@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import redirect
 from videojocs.models import Platform,Videogame, platforms_users
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import View
 from django.contrib.auth.models import User
 import random
@@ -15,10 +16,9 @@ class home(View):
     def get(self, data):
         return render(data, 'html/index.html')
 
-class videogames(View):
+class videogames(LoginRequiredMixin, View):
     def get(self, data):
         videogames = Videogame.objects.select_related('platform')
-
         platforms = Platform.objects.all()
         context = {
             'videogames': videogames,
@@ -43,7 +43,7 @@ class videogames(View):
         return redirect(backUrl)
 
 
-class platforms(View):
+class platforms(LoginRequiredMixin, View):
     def get(self, data):
         platforms = Platform.objects.all()
         users = User.objects.filter(is_staff=0)
@@ -52,7 +52,22 @@ class platforms(View):
             'users': users
         }
         return render(data, 'html/platform.html', context = context)
+    def get(self, request, name):
+        backUrl = request.META.get('HTTP_REFERER')
+        print(backUrl)
+        user = User.objects.filter(username=name)
+        if user:
+            platforms_inter = platforms_users.objects.filter(user_id=user[0])
+            if platforms_inter:
+                idList = []
+                for p in platforms_inter:
+                    idList.append(p.platform_id)
 
+                platforms = Platform.objects.filter(id__in=idList).values()
+                randomPlatform =  list(platforms)[random.randint(0, len(list(platforms))-1)]
+                return JsonResponse(randomPlatform, safe=False)
+        else:
+            return redirect(backUrl)
     def post(self, request):
         backUrl = request.META.get('HTTP_REFERER')
         name = request.POST['name']
@@ -63,7 +78,7 @@ class platforms(View):
         platform.save()
 
         return redirect(backUrl)
-class usersPlatform(View):
+class usersPlatform(LoginRequiredMixin, View):
     def get(self, request, name):
         backUrl = request.META.get('HTTP_REFERER')
         print(backUrl)
@@ -90,7 +105,7 @@ class usersPlatform(View):
         platform.save()
         return redirect(backUrl)
 
-class platformEdit(View):
+class platformEdit(LoginRequiredMixin, View):
     def post(self, request, id):
         backUrl = request.META.get('HTTP_REFERER')
         platform = Platform.objects.get(id=id)
@@ -101,13 +116,13 @@ class platformEdit(View):
         platform.save()
         return redirect(backUrl)
 
-class platformDelete(View):
+class platformDelete(LoginRequiredMixin, View):
     def post(self, request, id):
         backUrl = request.META.get('HTTP_REFERER')
         platform = Platform.objects.get(id=id).delete()
         return redirect(backUrl)
 
-class platformRandom(View):
+class platformRandom(LoginRequiredMixin, View):
     def get(self, data):
         platforms = Platform.objects.all()
         if(platforms):
@@ -122,7 +137,7 @@ class platformRandom(View):
             }
             return render(data, 'html/platformRandom.html', context=context)
 
-class platformRandomNewGames(View):
+class platformRandomNewGames(LoginRequiredMixin, View):
     def get(self, data):
         newVideogames = Videogame.objects.filter(isNew=1)
         if(newVideogames):
@@ -138,15 +153,15 @@ class platformRandomNewGames(View):
             }
             return render(data, 'html/platformRandom.html', context=context)
 
-class remove_videojoc(View):
+class remove_videojoc(LoginRequiredMixin, View):
     def get(self, request, videogame_id, user_id):
         user = User.objects.get(id = user_id)
         videogame = Videogame.objects.get(id = videogame_id)
 
         videogame.users.remove(user)
-        return redirect("platforms")
+        return JsonResponse(videogame.name +" removed to " + user.username, safe=False)
 
-class add_videojoc(View):
+class add_videojoc(LoginRequiredMixin, View):
     def get(self, request, videogame_id, user_id):
         user = User.objects.get(id = user_id)
         videogame = Videogame.objects.get(id = videogame_id)
@@ -154,4 +169,5 @@ class add_videojoc(View):
         videogame.users.add(user)
         videogame.save()
 
-        return redirect("platforms")
+        return JsonResponse(videogame.name +" added to "+user.username, safe=False)
+

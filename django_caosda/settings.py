@@ -81,13 +81,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'djangovideojocs',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'super3',
         'HOST': 'localhost',
         'PORT': '3306',
 }
 }
 
-
+LOGIN_URL = '/login/'
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 

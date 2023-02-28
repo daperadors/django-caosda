@@ -46,12 +46,25 @@ class videogames(LoginRequiredMixin, View):
 class platforms(LoginRequiredMixin, View):
     def get(self, data):
         platforms = Platform.objects.all()
-        users = User.objects.filter(is_staff=0)
+        users = User.objects.all()
         context = {
             'platforms':platforms,
             'users': users
         }
         return render(data, 'html/platform.html', context = context)
+    def post(self, request):
+        backUrl = request.META.get('HTTP_REFERER')
+        name = request.POST['name']
+        if request.POST['date'] != "":
+            datestr = request.POST['date']
+            date = datetime.strptime(datestr, '%Y-%m-%d').date()
+        else:
+            date = datetime.today()
+        platform = Platform(name=name, date=date)
+        platform.save()
+
+        return redirect(backUrl)
+class platform_by_id(LoginRequiredMixin, View):
     def get(self, request, name):
         backUrl = request.META.get('HTTP_REFERER')
         print(backUrl)
@@ -66,18 +79,7 @@ class platforms(LoginRequiredMixin, View):
                 platforms = Platform.objects.filter(id__in=idList).values()
                 randomPlatform =  list(platforms)[random.randint(0, len(list(platforms))-1)]
                 return JsonResponse(randomPlatform, safe=False)
-        else:
             return redirect(backUrl)
-    def post(self, request):
-        backUrl = request.META.get('HTTP_REFERER')
-        name = request.POST['name']
-        datestr = request.POST['date']
-        date = datetime.strptime(datestr, '%Y-%m-%d').date()
-
-        platform = Platform(name=name, date=date)
-        platform.save()
-
-        return redirect(backUrl)
 class usersPlatform(LoginRequiredMixin, View):
     def get(self, request, name):
         backUrl = request.META.get('HTTP_REFERER')

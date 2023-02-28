@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from videojocs.views import home, videogames, platforms, platformRandom, platformEdit, platformDelete, platformRandomNewGames, usersPlatform, remove_videojoc, add_videojoc
+from videojocs.views import home, videogames, platforms, platformRandom, platformEdit, platformDelete, platformRandomNewGames, usersPlatform, remove_videojoc, add_videojoc, platform_by_id
 from users.views import LoginView, LogoutView
 from users.views import register
 
@@ -38,5 +38,5 @@ urlpatterns = [
     path('plataformesde/<str:name>', usersPlatform.as_view(), name="user_platform_search"),
     path('removeVideojoc/<int:videogame_id>/<int:user_id>', remove_videojoc.as_view()),
     path('videojoc/<int:videogame_id>/<int:user_id>', add_videojoc.as_view()),
-    path('plataformade/<str:name>', platforms.as_view())
+    path('plataformade/<str:name>', platform_by_id.as_view())
 ]
